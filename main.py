@@ -60,7 +60,7 @@ def bwt_procedure():
 
     print("Input the alphabet:")
     alpha = input()
-    bwt = BWT_MTF("based")
+    bwt = BWT_MTF(alpha)
     enc = list(map(int, input("Input encoded message (separate indexes with space): ").split()))
     row = int(input("Input the index that were gotten in Burrows-Wheeler transformation: "))
     dec = bwt.decode(enc, row)
