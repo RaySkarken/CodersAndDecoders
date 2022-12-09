@@ -8,8 +8,10 @@ from utils import float_bin
 class BWT_MTF:
     def __init__(self, alphabet_or_msg=None):
         if alphabet_or_msg is None:
-            alphabet_or_msg = ascii_lowercase
-        self.alphabet = list(set(alphabet_or_msg))
+            alphabet_or_msg = list(ascii_lowercase)
+        alphabet_or_msg = list(alphabet_or_msg)
+        assert len(alphabet_or_msg) == len(set(alphabet_or_msg)), "Alphabet must not contain duplicates"
+        self.alphabet = alphabet_or_msg
 
     def bwt(self, s) -> Tuple[str, int]:
         """Apply Burrows-Wheeler transform to input string."""
@@ -29,13 +31,13 @@ class BWT_MTF:
     def ibwt(self, r, idx):
         """Apply inverse Burrows-Wheeler transform."""
         table = [""] * len(r)  # Make empty table
-        for i in range(len(r)):
+        for _ in range(len(r)):
             table = sorted(r[i] + table[i] for i in range(len(r)))  # Add a column of r
         s = table[idx]  # Find the correct row
         return s
 
     def move2front_decode(self, sequence):
-        chars, pad = [], self.alphabet[:]
+        chars, pad = [], self.alphabet[::]
         for indx in sequence:
             char = pad[indx]
             chars.append(char)
