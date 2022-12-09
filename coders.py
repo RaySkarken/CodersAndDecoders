@@ -37,7 +37,7 @@ class BWT_MTF:
         return s
 
     def move2front_decode(self, sequence):
-        chars, pad = [], self.alphabet[::]
+        chars, pad = [], self.alphabet[:]
         for indx in sequence:
             char = pad[indx]
             chars.append(char)
