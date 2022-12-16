@@ -70,10 +70,87 @@ def bwt_procedure():
     print("\n"+"#"*120+"\n")
 
 
+def shannon_decoder_procedure():
+    alpha = ["a", "b", "s", "d", "e"]
+    probs = [0.2, 0.1, 0.3, 0.2, 0.2]
+
+    s_coder = ShannonCoder(alpha, probs)
+
+    msg = "based"
+    print("Shannon Algorithm")
+    print("Example:")
+    print(f"\tAlphabet: {alpha}\n\tProbabilities: {probs}\n\tMessage: {msg}\n")
+    enc = s_coder.encode(msg)
+    print(f"\t{msg} -> {enc}")
+
+    dec = s_coder.decode(enc)
+    print(f"\t{enc} -> {dec}")
+
+    print("\t" + "-"*116)
+
+    for c, code in s_coder.alpha_to_code.items():
+        print(f"\t{c} -- {code}")
+
+    print("-"*120)
+    print("Enter alphabet without any separators:")
+    alpha = list(input())
+    assert len(set(alpha)) == len(alpha), "Alphabet should not contain duplicates"
+
+    print("Enter probabilities separated with spaces:")
+    probs = list(map(lambda x: float(x.replace(",", ".")), input().split(" ")))
+    assert len(alpha) == len(probs), "There are different amount of elements in alphabet and probabilities list. It caused Error!"
+    assert 0 < sum(probs) <= 1, "Sum of probabilities must be positive number less than one!"
+
+    s_coder = ShannonCoder(alpha, probs)
+
+    msg = input("Enter your encoded message: ")
+
+    dec = s_coder.decode(msg)
+    print(f"{msg} -> {dec}")
+
+    enc = s_coder.encode(dec)
+    print(f"{dec} -> {enc}")
+
+    print("-"*120)
+
+    for c, code in s_coder.alpha_to_code.items():
+        print(f"\"{c}\" -- {code}")
+    print("\n"+"#"*120+"\n")
+
+
+def bwt_encoder_procedure():
+    print("Burrows-Wheeler transform + move to front")
+    print("Example:")
+    bwt = BWT_MTF("based")
+    enc, row = bwt.encode("based")
+    print(f"\tbased -> {enc} | index - {row}")
+
+    dec = bwt.decode(enc)
+    print(f"\t{enc} | index - {row} -> {dec}")
+
+    print("\t" + "-" * 116)
+
+    print("Input the alphabet without separator:")
+    alpha = input()
+    bwt = BWT_MTF(alpha)
+    msg = input("Enter your message: ")
+    enc, row = bwt.encode(msg)
+    print(f"{msg} -> {enc} | index - {row}")
+    dec = bwt.decode(enc, row)
+    print(f"\n{enc} | index - {row} -> {dec}")
+    print("\n" + "#" * 120 + "\n")
+
+
 if __name__ == '__main__':
     cmd = None
-    while cmd != "3":
-        cmd = input("Select an option\n1. Shannon encoder.\n2. Burrows-Wheeler transformation + Move to front decoder.\n3. Exit\n(your input): ")
+    while cmd != "5":
+        cmd = input("Select an option"
+                    "\n1. Shannon encoder."
+                    "\n2. Burrows-Wheeler transformation + Move to front decoder."
+                    "\n3. Shannon decoder."
+                    "\n4. Burrows-Wheeler transformation + Move to front encoder."
+                    "\n5. Exit."
+                    "\n(your input): ")
         if cmd == "1":
             try:
                 shannon_procedure()
@@ -86,6 +163,18 @@ if __name__ == '__main__':
             except Exception as e:
                 print(e)
                 print()
-        elif cmd != "3":
+        elif cmd == "3":
+            try:
+                shannon_decoder_procedure()
+            except Exception as e:
+                print(e)
+                print()
+        elif cmd == "4":
+            try:
+                bwt_encoder_procedure()
+            except Exception as e:
+                print(e)
+                print()
+        elif cmd != "5":
             print("You've selected wrong option! Please try again.\n")
 
